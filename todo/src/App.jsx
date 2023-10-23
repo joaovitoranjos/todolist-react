@@ -1,15 +1,18 @@
 import { useState } from 'react'
 
 import Todo from './components/Todo';
+import Search from './components/Search';
+import TodoForm from './components/TodoForm';
 
 import "./App.css";
-import TodoForm from './components/TodoForm';
+
+
 
 function App() {
   const [todos, setTodos] = useState([
     {
       id: 1,
-      text:"Criaar funcionalidade x no sitema",
+      text:"Criar funcionalidade x no sistema",
       category: "Trabalho",
       isCompleted: false,
 
@@ -30,6 +33,8 @@ function App() {
     },
     
   ]);
+
+  const [search, setSearch] = useState("");
 
   const addTodo = (text, category) => {
 
@@ -65,14 +70,23 @@ function App() {
   return (
     <div className="app">  
       <h1>Lista de Tarefas</h1>
+      <Search search={search} setSearch={setSearch}/>
         <div className="todo-list">
-          {todos.map((todo) =>(
-            <Todo key={todo.id} todo={todo} removeTodo= {removeTodo} completeTodo={completeTodo}/>
+          {todos.filter((todo) =>
+            todo.text.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((todo) => (
+            <Todo 
+            key={todo.id}
+            todo={todo}
+            removeTodo= {removeTodo}
+            completeTodo={completeTodo}
+            />
       ))}
     </div>
     <TodoForm addTodo={addTodo} />
-  </div> );
+  </div> 
   
-}
+)}
 
 export default App;
